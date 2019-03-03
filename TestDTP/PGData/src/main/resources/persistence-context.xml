@@ -41,6 +41,6 @@
 		<property name="jtaDataSource" ref="dataSource" />
 	</bean>
 
-	<jpa:repositories base-package="dtp.mysqlDATA.repository" />
+	<jpa:repositories base-package="dtp.PGData.repository" />
 
 </beans>

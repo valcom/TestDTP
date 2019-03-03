@@ -1,1 +1,2 @@
-dtp\PGData\App.class
+dtp\PGData\entity\Conto.class
+dtp\PGData\repository\ContoPgRepository.class

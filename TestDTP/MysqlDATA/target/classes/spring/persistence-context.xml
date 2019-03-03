@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
      http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-	<bean id="dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+	<bean id="dataSourceMySQL" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
 		<!-- set an arbitrary but unique name for the datasource -->
 		<property name="uniqueResourceName">
 			<value>MySQL-XADBMS</value>
@@ -33,14 +31,15 @@
 		<property name="poolSize" value="3" />
 	</bean>
 
-	<bean id="entityManagerFactory"
+	<bean id="entityManagerFactoryMySQL"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
-		<property name="jtaDataSource" ref="dataSource" />
+		<property name="jtaDataSource" ref="dataSourceMySQL" />
+		<property name="packagesToScan" value="dtp.mysqlDATA.entity"/>
 	</bean>
 
-	<jpa:repositories base-package="dtp.mysqlDATA.repository" />
+	<jpa:repositories base-package="dtp.mysqlDATA.repository" entity-manager-factory-ref="entityManagerFactoryMySQL"/>
 
 </beans>

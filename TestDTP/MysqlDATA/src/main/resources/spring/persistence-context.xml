@@ -7,7 +7,9 @@
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-	<bean id="dataSourceMySQL" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+	<bean id="dataSourceMySQL"
+		class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
+		destroy-method="close">
 		<!-- set an arbitrary but unique name for the datasource -->
 		<property name="uniqueResourceName">
 			<value>MySQL-XADBMS</value>
@@ -23,8 +25,7 @@
 			<props>
 				<prop key="user">sql7281619</prop>
 				<prop key="password">JYz4SnxvRy</prop>
-				<prop key="URL">jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7281619?autoReconnect=true
-				</prop>
+				<prop key="URL">jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7281619?autoReconnect=true</prop>
 			</props>
 		</property>
 		<!-- how many connections in the pool? -->
@@ -32,14 +33,24 @@
 	</bean>
 
 	<bean id="entityManagerFactoryMySQL"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		depends-on="transactionManager">
 		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
 		<property name="jtaDataSource" ref="dataSourceMySQL" />
-		<property name="packagesToScan" value="dtp.mysqlDATA.entity"/>
+		<property name="packagesToScan" value="dtp.mysqlDATA.entity" />
+		<property name="jpaPropertyMap">
+			<map>
+				<entry key="javax.persistence.transactionType" value="JTA" />
+			</map>
+		</property>
 	</bean>
 
-	<jpa:repositories base-package="dtp.mysqlDATA.repository" entity-manager-factory-ref="entityManagerFactoryMySQL"/>
+	<jpa:repositories
+		base-package="dtp.mysqlDATA.repository"
+		entity-manager-factory-ref="entityManagerFactoryMySQL"
+		transaction-manager-ref="transactionManager" />
 
 </beans>

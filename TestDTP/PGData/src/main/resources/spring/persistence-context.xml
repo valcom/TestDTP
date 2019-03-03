@@ -7,7 +7,7 @@
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-	<bean id="dataSourcePG" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+	<bean id="dataSourcePgSQL" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
 		<!-- set an arbitrary but unique name for the datasource -->
 		<property name="uniqueResourceName">
 			<value>PgSQL-XADBMS</value>
@@ -23,24 +23,27 @@
 			<props>
 				<prop key="user">mcyrdvyk</prop>
 				<prop key="password">NDBERor5-TdsFMb4B4O2Q9ITHeW_wo6s</prop>
-				<prop key="URL">jdbc:postgres://manny.db.elephantsql.com:5432
-				</prop>
+				<prop key="URL">jdbc:postgresql://manny.db.elephantsql.com:5432/mcyrdvyk</prop>
 			</props>
 		</property>
 		<!-- how many connections in the pool? -->
-		<property name="poolSize" value="3" />
+		<property name="poolSize" value="2" />
 	</bean>
 
-	<bean id="entityManagerFactoryPG"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<bean id="entityManagerFactoryPgSQL"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="transactionManager">
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
-		<property name="jtaDataSource" ref="dataSourcePG" />
+		<property name="jtaDataSource" ref="dataSourcePgSQL" />
 		<property name="packagesToScan" value="dtp.PGData.entity"/>
-		
+		<property name="jpaPropertyMap">
+			<map>
+				<entry key="javax.persistence.transactionType" value="JTA" />
+			</map>
+		</property>
 	</bean>
 
-	<jpa:repositories base-package="dtp.PGData.repository" entity-manager-factory-ref="entityManagerFactoryPG"/>
+	<jpa:repositories base-package="dtp.PGData.repository" entity-manager-factory-ref="entityManagerFactoryPgSQL" transaction-manager-ref="transactionManager"/>
 
 </beans>

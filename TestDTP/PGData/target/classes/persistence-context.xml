@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<bean id="dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+		<!-- set an arbitrary but unique name for the datasource -->
+		<property name="uniqueResourceName">
+			<value>PgSQL-XADBMS</value>
+		</property>
+		<!-- set the underlying driver class to use, in this example case we use 
+			postgresql -->
+		<property name="xaDataSourceClassName">
+			<value>org.postgresql.xa.PGXADataSource</value>
+		</property>
+		<property name="xaProperties">
+			<!-- set the driver-specific XADataSource properties (check your driver 
+				docs for more info) -->
+			<props>
+				<prop key="user">mcyrdvyk</prop>
+				<prop key="password">NDBERor5-TdsFMb4B4O2Q9ITHeW_wo6s</prop>
+				<prop key="URL">jdbc:postgres://manny.db.elephantsql.com:5432
+				</prop>
+			</props>
+		</property>
+		<!-- how many connections in the pool? -->
+		<property name="poolSize" value="3" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jtaDataSource" ref="dataSource" />
+	</bean>
+
+	<jpa:repositories base-package="dtp.mysqlDATA.repository" />
+
+</beans>

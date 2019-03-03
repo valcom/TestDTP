@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<bean id="dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+		<!-- set an arbitrary but unique name for the datasource -->
+		<property name="uniqueResourceName">
+			<value>MySQL-XADBMS</value>
+		</property>
+		<!-- set the underlying driver class to use, in this example case we use 
+			Oracle -->
+		<property name="xaDataSourceClassName">
+			<value>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</value>
+		</property>
+		<property name="xaProperties">
+			<!-- set the driver-specific XADataSource properties (check your driver 
+				docs for more info) -->
+			<props>
+				<prop key="user">sql7281619</prop>
+				<prop key="password">JYz4SnxvRy</prop>
+				<prop key="URL">jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7281619?autoReconnect=true
+				</prop>
+			</props>
+		</property>
+		<!-- how many connections in the pool? -->
+		<property name="poolSize" value="3" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jtaDataSource" ref="dataSource" />
+	</bean>
+
+	<jpa:repositories base-package="dtp.mysqlDATA.repository" />
+
+</beans>

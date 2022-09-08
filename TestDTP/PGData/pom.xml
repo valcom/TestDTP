@@ -18,7 +18,7 @@
 		<spring-data-version>2.0.7.RELEASE</spring-data-version>
 		<hibernate.version>5.2.17.Final</hibernate.version>
 		<atomikos.version>4.0.6</atomikos.version>
-		<postgresql.version>42.2.5</postgresql.version>
+		<postgresql.version>42.4.1</postgresql.version>
 	</properties>
 	<dependencies>
 		<dependency>

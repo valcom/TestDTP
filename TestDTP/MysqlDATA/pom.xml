@@ -16,7 +16,7 @@
 	<properties>
 		<javax.persistence.version>2.2</javax.persistence.version>
 		<spring-data-version>2.0.7.RELEASE</spring-data-version>
-		<hibernate.version>5.2.17.Final</hibernate.version>
+		<hibernate.version>5.3.20.Final</hibernate.version>
 		<atomikos.version>4.0.6</atomikos.version>
 		<mysql-connector.version>5.1.47</mysql-connector.version>
 		
